@@ -1,4 +1,36 @@
 {
   "name": "md-links",
-  "version": "0.1.0"
+  "version": "0.1.0",
+  "description": "Application that detects broken links in Markdown files. It is a project for Laboratoria cohort SCL010",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --coverage",
+    "eslint": "eslint --ext .js /index.js test/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ClaudiaQuezadaRiquelme/SCL010-md-links"
+  },
+  "keywords": [
+    "markdown",
+    "Markdown",
+    "MD",
+    "MD File",
+    "Archivo MD",
+    ".md",
+    "scl",
+    "010",
+    "app"
+  ],
+  "author": "Laboratoria",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ClaudiaQuezadaRiquelme/SCL010-md-links/issues"
+  },
+  "homepage": "https://github.com/ClaudiaQuezadaRiquelme/SCL010-md-links",
+  "dependencies": {
+    "eslint": "^6.2.1",
+    "eslint-plugin-jest": "^22.15.2",
+    "jest": "^24.9.0"
+  }
 }

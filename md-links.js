@@ -55,6 +55,11 @@ const callMarkdownLinkExtractor = (element) => {
     links.forEach(function (link) {
         console.log('markdown-link-extractor: '+ link);
     });
+    let mdTextLinkExtractor = require('./markdown-text-link-extractor');
+    let texts = mdTextLinkExtractor(markdown);
+    texts.forEach(function (text) {
+        console.log('markdown-text-link-extractor: '+ text); 
+    });
 }
 
 

@@ -52,14 +52,24 @@ const callMarkdownLinkExtractor = (element) => {
     let markdownLinkExtractor = require('markdown-link-extractor');
     let markdown = fs.readFileSync(element).toString();
     let links = markdownLinkExtractor(markdown);
-    links.forEach(function (link) {
-        console.log('markdown-link-extractor: '+ link);
-    });
     let mdTextLinkExtractor = require('./markdown-text-link-extractor');
     let texts = mdTextLinkExtractor(markdown);
-    texts.forEach(function (text) {
-        console.log('markdown-text-link-extractor: '+ text); 
+    let returnObjectArray = [];
+    let returnObject = {
+        link: '',
+        text: ''
+    }
+    links.forEach(function (link) {
+        //console.log('markdown-link-extractor: '+ link);
+        texts.forEach(function (text) {
+            //console.log('markdown-text-link-extractor: '+ text); 
+            returnObject.link = link;
+            returnObject.text = text;
+        });
+        returnObjectArray.push(returnObject);
     });
+
+    console.log(returnObjectArray);
 }
 
 

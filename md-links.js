@@ -26,7 +26,6 @@ standardInput.on('data', (data) => {
     }
 });
 
-//esto tiene que ser una función y adentro de paths tiene que ingresar data
 const findUrlAndLinks = (Directory) => {
     callFileHound(Directory);
 }
@@ -40,36 +39,64 @@ const callFileHound = (Directory) => {
     .find();
     
     files.then(res => {
-        res.forEach( (element) => {
-            console.log('filehound: '+element);
-            callMarkdownLinkExtractor(element);
+        res.forEach( (element) => {//nunca entra acá cuando poones ruta de archivo
+            let directoryString = '';
+            directoryString += element;
+            directoryString += ' ';
+            callMarkdownLinkExtractor(element, directoryString);
         })
     });
 }
 
-const callMarkdownLinkExtractor = (element) => {
+const callMarkdownLinkExtractor = (element, directoryString) => {
     let fs = require('fs');
     let markdownLinkExtractor = require('markdown-link-extractor');
     let markdown = fs.readFileSync(element).toString();
-    let links = markdownLinkExtractor(markdown);
+    let links = markdownLinkExtractor(markdown);//[]
     let mdTextLinkExtractor = require('./markdown-text-link-extractor');
-    let texts = mdTextLinkExtractor(markdown);
-    let returnObjectArray = [];
-    let returnObject = {
-        link: '',
-        text: ''
+    let texts = mdTextLinkExtractor(markdown);//[]
+    let directory = '';
+    let linkText = '';
+    
+    if (directoryString === undefined) { //if directoryString === udefined, directoryString = element
+        directory = element;
+        directory += '  ';
+        
+    } else {
+        directory = directoryString;
+        directory += ' ';
     }
-    links.forEach(function (link) {
-        //console.log('markdown-link-extractor: '+ link);
-        texts.forEach(function (text) {
-            //console.log('markdown-text-link-extractor: '+ text); 
-            returnObject.link = link;
-            returnObject.text = text;
-        });
+
+    linkText += directory;
+    let returnObjectArray = [];
+    
+    let count = 0;
+    links.forEach( (link) => {
+        let returnObject = {
+            link: '',
+            text: ''
+        }
+
+        let truncatedText = returnTruncatedText(texts[count]);
+        returnObject.link = link;
+        returnObject.text = truncatedText;
+
         returnObjectArray.push(returnObject);
+        count += 1;
     });
 
-    console.log(returnObjectArray);
+    for(count = 0; count < returnObjectArray.length; count++) {
+        linkText += returnObjectArray[count].link;
+        linkText += '  ';
+        linkText += returnObjectArray[count].text;
+        linkText += '  ';
+        console.log(linkText);//lo que queremos ver como resultado final en terminal
+        linkText = directory;
+    }
 }
 
-
+const returnTruncatedText = (text) => {
+    let length = 50;
+    let truncatedText = text.substring(0, length);
+    return truncatedText;
+}

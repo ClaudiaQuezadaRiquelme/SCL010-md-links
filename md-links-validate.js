@@ -1,5 +1,23 @@
-module.exports = mdLinks = {
-    findUrlAndLinks: (data) => {
+const validate = require('./md-links-options.js');
+
+module.exports = mdLinks = { //mdPromise y findUrlAndLinks hacen lo mismo. Una es promesa y la otra, no
+    mdPromise: (data) => { //con promesa
+        let promise = new Promise ( (resolve, reject) => {
+            if (data.substring(data.length-1, data.length-4) === '.md') {//si es url de un archivo
+                // Print user input in console.
+                console.log('User Input Data : ' + data);
+                //Saltarse el paso de filehound e ir directo al paso de markdown-link-extractor
+                resolve( mdLinks.printDirectoryLinkText(mdLinks.callMarkdownLinkExtractor(data.replace('\n', ''))) );
+            } else {//si es un directorio
+                // Print user input in console.
+                console.log('User Input Data : ' + data);
+                resolve( mdLinks.callFileHound(data.replace('\n', '')) );
+            }
+        })
+        return promise;
+    },
+
+    findUrlAndLinks: (data) => { // sin promesa
         if (data.substring(data.length-1, data.length-4) === '.md') {//si es url de un archivo
             // Print user input in console.
             console.log('User Input Data : ' + data);
@@ -39,8 +57,8 @@ module.exports = mdLinks = {
         const mdTextLinkExtractor = require('./markdown-text-link-extractor');
         let texts = mdTextLinkExtractor(markdown);//[]
         let directory = '';
-        let linkText = '';
-        let returnDirectoryLinkText = [];
+        //let linkText = '';
+        //let returnDirectoryLinkText = [];
         
         if (directoryString === undefined) { //if directoryString === udefined, directoryString = element
             directory = element;
@@ -51,36 +69,39 @@ module.exports = mdLinks = {
             directory += ' ';
         }
     
-        linkText += directory;
+        //linkText += directory;
         let ArrayOfLinkTextObjects = [];
         
         let count = 0;
         links.forEach( (link) => {
-            let LinkTextObject = {
+            let directoryLinkTextObject = {
+                directory: '',
                 link: '',
                 text: ''
                 //status: ''//valid / invalid === ok / fail //no se puede guardar el status porque fetch() funciona con promesas y las promesas no retornan cosas, sólo promesas
             }
     
             let truncatedText = mdLinks.returnTruncatedText(texts[count]);
-            LinkTextObject.link = link;
-            LinkTextObject.text = truncatedText;
+            directoryLinkTextObject.directory = directory;
+            directoryLinkTextObject.link = link;
+            directoryLinkTextObject.text = truncatedText;
     
-            ArrayOfLinkTextObjects.push(LinkTextObject);
+            ArrayOfLinkTextObjects.push(directoryLinkTextObject);
             count += 1;
         });
     
-        for(count = 0; count < ArrayOfLinkTextObjects.length; count++) {
-            linkText += ArrayOfLinkTextObjects[count].link;
-            linkText += '  ';
-            linkText += ArrayOfLinkTextObjects[count].text;
-            linkText += '  ';
-            //console.log(linkText);//lo que queremos ver como resultado final en terminal
-            returnDirectoryLinkText.push(linkText);
-            linkText = directory;
-        }
+        // for(count = 0; count < ArrayOfLinkTextObjects.length; count++) {
+        //     linkText += ArrayOfLinkTextObjects[count].link;
+        //     linkText += '  ';
+        //     linkText += ArrayOfLinkTextObjects[count].text;
+        //     linkText += '  ';
+        //     //console.log(linkText);//lo que queremos ver como resultado final en terminal
+        //     returnDirectoryLinkText.push(linkText);
+        //     linkText = directory;
+        // }
     
-        return returnDirectoryLinkText;//[]
+        //return returnDirectoryLinkText;//[]
+        return ArrayOfLinkTextObjects;
     },
     
     returnTruncatedText: (text) => {
@@ -89,12 +110,16 @@ module.exports = mdLinks = {
         return truncatedText;
     },
     
-    printDirectoryLinkText: (stringArray) => { //esto debería ser una promesa
+    printDirectoryLinkText: (objectArray) => { //esto debería ser una promesa
         //aquí dentro deberías validar los link e imprimir el status y ok/fail
         //tal vez en vez de recibir arreglo de strings, debe recibir arreglo de objetos y aquí armar el string
-        stringArray.forEach( (stringOfThisArray) => {
-            console.log(stringOfThisArray);
+        
+        
+        objectArray.forEach( (object) => {
+            validate.validate(object.directory, object.link, object.text);
         })
+        
+        
+        
     }
   };
-

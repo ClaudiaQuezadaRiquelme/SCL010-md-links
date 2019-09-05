@@ -33,6 +33,7 @@
     "eslint-plugin-jest": "^22.15.2",
     "filehound": "^1.17.3",
     "jest": "^24.9.0",
-    "markdown-link-extractor": "^1.2.1"
+    "markdown-link-extractor": "^1.2.1",
+    "node-fetch": "^2.6.0"
   }
 }

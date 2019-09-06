@@ -14,10 +14,8 @@ npm install claudia-md-links
 
 ##### Argumentos
 
-- `path`: Ruta absoluta o relativa al archivo o directorio.
-- `options`: Un objeto con las siguientes propiedades:
-  * `validate`: Booleano que determina si se desea validar los links
-    encontrados.
+- `path`: String que representa la ruta absoluta o relativa al archivo o directorio.
+- `options`: String que representa si el usuario desea validar los links, visualizar estadísticas o ambos. Se espera que en futuras iteraciones reciba un objeto con un booleano que representa si el usuario desea validar o no los links encontrados.
 
 ##### Valor de retorno
 
@@ -28,6 +26,8 @@ las siguientes propiedades:
 - `href`: URL encontrada.
 - `text`: Texto que aparecía dentro del link (`<a>`).
 - `file`: Ruta del archivo donde se encontró el link.
+
+En futuras iteraciones se espera que tenga este funcionamiento:
 
 #### Ejemplo
 
@@ -74,7 +74,7 @@ $ md-links ./some/example.md
 
 ##### `--validate`
 
-Si pasamos la opción `--validate`, el módulo hace una petición HTTP para averiguar si el link funciona o no. Si el link resulta en una redirección a una URL que responde ok, entonces consideraremos el link como válido.
+Si pasamos la opción `--validate` o `--val`, el módulo hace una petición HTTP para averiguar si el link funciona o no. Si el link resulta en una redirección a una URL que responde ok, entonces consideraremos el link como válido.
 
 Por ejemplo:
 
@@ -85,14 +85,11 @@ $ md-links ./some/example.md --validate
 ./some/example.md http://google.com/ ok 301 Google
 ```
 
-Vemos que el _output_ en este caso incluye la palabra `ok` o `fail` después de
-la URL, así como el status de la respuesta recibida a la petición HTTP a dicha
-URL.
+Vemos que el _output_ en este caso incluye la palabra `OK` o `FAIL` después de la URL, así como el status de la respuesta recibida a la petición HTTP a dicha URL.
 
 ##### `--stats`
 
-Si pasamos la opción `--stats` el output (salida) será un texto con estadísticas
-básicas sobre los links.
+Si pasamos la opción `--stats` o `--st` el output (salida) será un texto con estadísticas básicas sobre los links.
 
 ```sh
 $ md-links ./some/example.md --stats
@@ -100,8 +97,7 @@ Total: 3
 Unique: 3
 ```
 
-También podemos combinar `--stats` y `--validate` para obtener estadísticas que
-necesiten de los resultados de la validación.
+También podemos combinar `--stats` y `--validate` o `--st` y `--val` o `--validate` y `--stats` o `--val` y `--st` para obtener estadísticas que necesiten de los resultados de la validación.
 
 ```sh
 $ md-links ./some/example.md --stats --validate
@@ -110,6 +106,8 @@ Unique: 3
 Broken: 1
 ```
 
+Se encuentran implementadas las opciones combinadas, sin embargo tienen un comportamiento no tan conforme. Se espera mejorar en futuras iteraciones.
+
 
 ## Testing
 
@@ -117,4 +115,47 @@ Broken: 1
 npm test
 ```
 
+Se implementa test para dos funciones dentro del documento `md-links.js`. En el futuro, se espera testear promesas.
 
+
+## Implementación Actual
+
+### Diagrama de Flujo y Comentarios acerca de la Implementación
+
+Como punto de partida se estableció el siguiente diagrama desde el punto de vista del usuario:
+
+```
+Ingresa Petición
+$md-links <path> [option]
+|
+|__Si option es vacío
+|        - Busca archivo.md
+|        - Entra a .md
+|        - Si encuentra link:
+|              - Imprime link
+|              - imprime ruta
+|              - Encuentra texto con la ruta:
+|                    - Si el texto de la ruta es igual o menor a 50 caracteres:
+|                        Imprime texto
+|                    - Si no
+|                        Imprime texto truncado a 50 caracteres.
+|
+|__Si option es true
+         - Si option es --validate:
+               - Hace petición HTTP:
+                     - Si link funciona
+                         Output OK
+                     - Si no
+                         Output FAIL
+         - Si option es --stats:
+               - Imprime cantidad de links.
+               - Imprime cantidad de links únicos.
+         - Si option es --validate --stats:
+               - Imprime cantidad de links.
+               - Imprime cantidad de links únicos.
+               - Imprime cantidad de links rotos.
+```
+
+Este diagrama de flujo presenta el problema que no muestra los pasos previos cuando option es true. Por el tiempo limitado, se resolvió este problema duplicando el documento de funcionamiento por defecto y adaptándolo para cada caso cuando option es true. Se repite código pero no se pierde tiempo buscando la manera de optimizar. Como futura mejora, hay que optimizar integrando los documentos de forma que no se repita código.
+
+En cada documento `md-links... .js` se convoca todo el código a partir de una promesa. Una de las funciones hace exactamente lo mismo que la promesa, pero sin ser implementado como promesa. Pese a ser código muerto, se mantiene en su lugar con fines pedagógicos (o la palabra que corresponde para el aprendizaje de adultos).

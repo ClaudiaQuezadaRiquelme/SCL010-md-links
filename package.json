@@ -1,11 +1,18 @@
 {
-  "name": "md-links",
+  "name": "claudia-md-links",
   "version": "1.0.0",
   "description": "Application that detects broken links in Markdown files. It is a project for Laboratoria cohort SCL010",
   "main": "index.js",
   "scripts": {
     "test": "jest --coverage",
     "eslint": "eslint --ext .js /index.js test/"
+  },
+  "bin": {
+    "claudia-md-links": "bin/md-links",
+    "md-links": "index.js"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "repository": {
     "type": "git",

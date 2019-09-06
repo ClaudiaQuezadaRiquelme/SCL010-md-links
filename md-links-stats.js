@@ -1,4 +1,4 @@
-const validate = require('./md-links-options.js');
+const stats = require('./md-links-options.js');
 
 module.exports = mdLinks = { //mdPromise y findUrlAndLinks hacen lo mismo. Uno es promesa y el otro, no
     mdPromise: (data) => { //con promesa
@@ -95,10 +95,17 @@ module.exports = mdLinks = { //mdPromise y findUrlAndLinks hacen lo mismo. Uno e
         return truncatedText;
     },
     
-    printDirectoryLinkText: (objectArray) => {
+    printDirectoryLinkText: (objectArray) => { //esto debería ser una promesa
         //aquí dentro deberías validar los link e imprimir el status y ok/fail
-        objectArray.forEach( (object) => {
-            validate.validate(object.directory, object.link, object.text);
-        })
+        //tal vez en vez de recibir arreglo de strings, debe recibir arreglo de objetos y aquí armar el string
+        console.log(objectArray[0].directory);
+    
+        stats.stats(objectArray)
+        .then( )
+        .catch( (err) => {
+            // handle error for example
+            console.error(err);
+        });
+ 
     }
   };

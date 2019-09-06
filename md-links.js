@@ -89,8 +89,7 @@ module.exports = mdLinks = {
         return truncatedText;
     },
     
-    printDirectoryLinkText: (stringArray) => { //esto debería ser una promesa
-        //aquí dentro deberías validar los link e imprimir el status y ok/fail
+    printDirectoryLinkText: (stringArray) => {
         //tal vez en vez de recibir arreglo de strings, debe recibir arreglo de objetos y aquí armar el string
         stringArray.forEach( (stringOfThisArray) => {
             console.log(stringOfThisArray);

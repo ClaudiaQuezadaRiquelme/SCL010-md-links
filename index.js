@@ -1,6 +1,7 @@
 const mdLinksFile = require('./md-links.js');
-//const mdLinksOptions = require('./md-links-options.js');
 const mdLinksValidate = require('./md-links-validate.js');
+const mdLinksStats = require('./md-links-stats.js');
+const mdLinksToCOmbine = require('./md-links-toCombine.js');
 
 // Get process.stdin as the standard input object.
 let standardInput = process.stdin;
@@ -21,23 +22,27 @@ standardInput.on('data', (data) => {
         process.exit();
     } else {
       let input = data.split(' ');
-      if (input.length > 1) {
+      if (input.length === 3) { // directory --val --st
+        let directory = input[0];
+        let firstOption = input[1];
+        let secondOption = input[2].replace('\n', '');
+
+        if(  ( (!(firstOption.localeCompare('--validate'))  || !(firstOption.localeCompare('--val'))) && (!(secondOption.localeCompare('--stats'))  || !(secondOption.localeCompare('--st'))) ) || ( (!(firstOption.localeCompare('--stats'))  || !(firstOption.localeCompare('--st'))) && (!(secondOption.localeCompare('--validate'))  || !(secondOption.localeCompare('--val'))) )  ) {
+          mdLinksToCOmbine.mdPromise(directory);//doesn`t work very well
+        }
+
+      } else if (input.length > 1) {
         
         let directory = input[0];
         let option = input[1];
-        
-        /* después modificar para combinar dos opciones*/
-
+     
         if (!(option.localeCompare('--validate\n'))  || !(option.localeCompare('--val\n'))) {
-          
           //miau
-          //mdLinksOptions.returnValidate(directory,'https://hackersandslackers.com/making-api-requests-with-nodejs/', 'blablabla');//valid
-          //mdLinksOptions.returnValidate(directory,'http://pastie.org/private/1wfgxtoipkeaokbqgtpjig', 'blablabla');//invalid
-
           mdLinksValidate.mdPromise(directory);
 
-        } else if (option === '--stats' || option === '--st') {
+        } else if (!(option.localeCompare('--stats\n')) || !(option.localeCompare('--st\n'))) {
           //re-miau
+          mdLinksStats.mdPromise(directory);
         } 
       } else { //comportamiento por defecto
         mdLinksFile.findUrlAndLinks(data);//funciona. Bakán, terrible buena onda

@@ -1,17 +1,17 @@
 const validate = require('./md-links-options.js');
 
-module.exports = mdLinks = { //mdPromise y findUrlAndLinks hacen lo mismo. Uno es promesa y el otro, no
+module.exports = mdLinksValidate = { //mdPromise y findUrlAndLinks hacen lo mismo. Uno es promesa y el otro, no
     mdPromise: (data) => { //con promesa
         let promise = new Promise ( (resolve, reject) => {
             if (data.substring(data.length-1, data.length-4) === '.md') {//si es url de un archivo
                 // Print user input in console.
                 console.log('User Input Data : ' + data);
                 //Saltarse el paso de filehound e ir directo al paso de markdown-link-extractor
-                resolve( mdLinks.printDirectoryLinkText(mdLinks.callMarkdownLinkExtractor(data.replace('\n', ''))) );
+                resolve( mdLinksValidate.printDirectoryLinkText(mdLinksValidate.callMarkdownLinkExtractor(data.replace('\n', ''))) );
             } else {//si es un directorio
                 // Print user input in console.
                 console.log('User Input Data : ' + data);
-                resolve( mdLinks.callFileHound(data.replace('\n', '')) );
+                resolve( mdLinksValidate.callFileHound(data.replace('\n', '')) );
             }
         })
         return promise;
@@ -22,11 +22,11 @@ module.exports = mdLinks = { //mdPromise y findUrlAndLinks hacen lo mismo. Uno e
             // Print user input in console.
             console.log('User Input Data : ' + data);
             //Saltarse el paso de filehound e ir directo al paso de markdown-link-extractor
-            mdLinks.printDirectoryLinkText(mdLinks.callMarkdownLinkExtractor(data.replace('\n', '')));
+            mdLinksValidate.printDirectoryLinkText(mdLinksValidate.callMarkdownLinkExtractor(data.replace('\n', '')));
         } else {//si es un directorio
             // Print user input in console.
             console.log('User Input Data : ' + data);
-            mdLinks.callFileHound(data.replace('\n', ''));
+            mdLinksValidate.callFileHound(data.replace('\n', ''));
         }
     },
     
@@ -43,7 +43,7 @@ module.exports = mdLinks = { //mdPromise y findUrlAndLinks hacen lo mismo. Uno e
                 let directoryString = '';
                 directoryString += element;
                 directoryString += ' ';
-                mdLinks.printDirectoryLinkText(mdLinks.callMarkdownLinkExtractor(element, directoryString));
+                mdLinksValidate.printDirectoryLinkText(mdLinksValidate.callMarkdownLinkExtractor(element, directoryString));
             }); 
         });
     },
@@ -77,7 +77,7 @@ module.exports = mdLinks = { //mdPromise y findUrlAndLinks hacen lo mismo. Uno e
                 //status: ''//valid / invalid === ok / fail //no se puede guardar el status porque fetch() funciona con promesas y las promesas no retornan cosas, sólo promesas
             }
     
-            let truncatedText = mdLinks.returnTruncatedText(texts[count]);
+            let truncatedText = mdLinksValidate.returnTruncatedText(texts[count]);
             directoryLinkTextObject.directory = directory;
             directoryLinkTextObject.link = link;
             directoryLinkTextObject.text = truncatedText;

@@ -16,13 +16,14 @@ console.log('Please input a directory in command line, "exit" to close.');
 standardInput.on('data', (data) => {
 
     // User input exit.
-    if(data === 'exit\n'){
+    if(data === 'exit\n' || data === 'EXIT\n' || data === 'Exit\n'){
         // Program exit.
         console.log("User input complete, program exit.");
         process.exit();
     } else {
       let input = data.split(' ');
       if (input.length === 3) { // directory --val --st
+        
         let directory = input[0];
         let firstOption = input[1];
         let secondOption = input[2].replace('\n', '');
@@ -32,7 +33,6 @@ standardInput.on('data', (data) => {
         }
 
       } else if (input.length > 1) {
-        
         let directory = input[0];
         let option = input[1];
      
@@ -45,7 +45,7 @@ standardInput.on('data', (data) => {
           mdLinksStats.mdPromise(directory);
         } 
       } else { //comportamiento por defecto
-        mdLinksFile.findUrlAndLinks(data);//funciona. Bakán, terrible buena onda
+        mdLinksFile.mdPromise(data);//funciona. Bakán, terrible buena onda
       }
     }
 });

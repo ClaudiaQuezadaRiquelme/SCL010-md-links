@@ -164,3 +164,21 @@ $md-links <path> [option]
 Este diagrama de flujo presenta el problema que no muestra los pasos previos cuando option es true. Por el tiempo limitado, se resolvió este problema duplicando el documento de funcionamiento por defecto y adaptándolo para cada caso cuando option es true. Se repite código pero no se pierde tiempo buscando la manera de optimizar. Como futura mejora, hay que optimizar integrando los documentos de forma que no se repita código.
 
 En cada documento `md-links... .js` se convoca todo el código a partir de una promesa. Una de las funciones hace exactamente lo mismo que la promesa, pero sin ser implementado como promesa. Pese a ser código muerto, se mantiene en su lugar con fines pedagógicos (o la palabra que corresponde para el aprendizaje de adultos).
+
+
+### Historias de Usuario
+
+Se organizó el proyecto en base a 8 historias de usuario
+
+- **HU1: Buscar links en .md y mostrarlos - Comportamiento por Defecto**
+- **HU2: Mostrar la Ruta del archivo con links - Comportamiento por Defecto**
+- **HU3: Mostrar texto del link - Comportamiento por Defecto**
+- **HU4: Truncar texto del link si es muy grande - Comportamiento por Defecto**
+- **HU5: Ver si el link descubierto funciona - Option --validate**
+- **HU6: Ver cuántos links hay - Option --stats**
+- **HU7: Ver cuántos links son únicos - Option --stats**
+- **HU8: Ver cuántos links no funcionan - Option --stats --validate**
+
+**HU1 - 4** Implementado sin problemas aparentes.
+**HU5 - 7** Funcionan al ingresar el directorio de una carpeta pero no al ingresar el directorio de un archivo. Esto no fue detectado en el momento de la implementación, por eso se continuó avanzando con las siguientes HU.
+**HU8** Implementado con comportamiento imperfecto (stats separados de broken/links rotos).

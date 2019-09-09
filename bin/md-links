@@ -1,2 +1,2 @@
-require = requiere('esm')(module/*, options*/);
+require = require('esm')(module/*, options*/);
 require('../index.js').startUser(process.argv)

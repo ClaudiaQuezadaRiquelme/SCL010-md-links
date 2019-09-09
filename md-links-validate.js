@@ -7,7 +7,7 @@ module.exports = mdLinksValidate = { //mdPromise y findUrlAndLinks hacen lo mism
                 // Print user input in console.
                 console.log('User Input Data : ' + data);
                 //Saltarse el paso de filehound e ir directo al paso de markdown-link-extractor
-                resolve( mdLinksValidate.printDirectoryLinkText(mdLinksValidate.callMarkdownLinkExtractor(data.replace('\n', ''))) );
+                resolve( mdLinksValidate.printDirectoryLinkText(mdLinksValidate.callMarkdownLinkExtractor(data.replace('\n', ''), undefined)) );
             } else {//si es un directorio
                 // Print user input in console.
                 console.log('User Input Data : ' + data);
@@ -22,7 +22,7 @@ module.exports = mdLinksValidate = { //mdPromise y findUrlAndLinks hacen lo mism
             // Print user input in console.
             console.log('User Input Data : ' + data);
             //Saltarse el paso de filehound e ir directo al paso de markdown-link-extractor
-            mdLinksValidate.printDirectoryLinkText(mdLinksValidate.callMarkdownLinkExtractor(data.replace('\n', '')));
+            mdLinksValidate.printDirectoryLinkText(mdLinksValidate.callMarkdownLinkExtractor(data.replace('\n', ''), undefined));
         } else {//si es un directorio
             // Print user input in console.
             console.log('User Input Data : ' + data);
@@ -49,6 +49,8 @@ module.exports = mdLinksValidate = { //mdPromise y findUrlAndLinks hacen lo mism
     },
     
     callMarkdownLinkExtractor: (element, directoryString) => {
+        console.log('callMarkdownLinkExtractor');
+        
         const fs = require('fs');
         const markdownLinkExtractor = require('markdown-link-extractor');
         let markdown = fs.readFileSync(element).toString();

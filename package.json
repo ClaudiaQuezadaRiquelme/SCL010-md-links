@@ -1,6 +1,6 @@
 {
   "name": "claudia-md-links",
-  "version": "1.0.0",
+  "version": "1.1.1",
   "description": "Application that detects broken links in Markdown files. It is a project for Laboratoria cohort SCL010",
   "main": "index.js",
   "scripts": {

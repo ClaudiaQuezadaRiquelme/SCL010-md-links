@@ -79,28 +79,32 @@ Si pasamos la opción `--validate` o `--val`, el módulo hace una petición HTTP
 Por ejemplo:
 
 ```sh
-$ md-links ./some/example.md --validate
-./some/example.md http://algo.com/2/3/ ok 200 Link a algo
-./some/example.md https://otra-cosa.net/algun-doc.html fail 404 algún doc
-./some/example.md http://google.com/ ok 301 Google
+$ md-links ./some/example/ --validate
+./some/example/ http://algo.com/2/3/ ok 200 Link a algo
+./some/example/ https://otra-cosa.net/algun-doc.html fail 404 algún doc
+./some/example/ http://google.com/ ok 301 Google
 ```
 
 Vemos que el _output_ en este caso incluye la palabra `OK` o `FAIL` después de la URL, así como el status de la respuesta recibida a la petición HTTP a dicha URL.
+
+NO ESTÁ IMPLEMENTADO PARA EL INGRESO DEL DIRECTORIO DE UN  ARCHIVO.MD, SÓLO PARA EL DIRECTORIO DE UNA CARPETA CON ARCHIVOS MARKDOWN.
 
 ##### `--stats`
 
 Si pasamos la opción `--stats` o `--st` el output (salida) será un texto con estadísticas básicas sobre los links.
 
 ```sh
-$ md-links ./some/example.md --stats
+$ md-links ./some/example/ --stats
 Total: 3
 Unique: 3
 ```
 
+NO ESTÁ IMPLEMENTADO PARA EL INGRESO DEL DIRECTORIO DE UN  ARCHIVO.MD, SÓLO PARA EL DIRECTORIO DE UNA CARPETA CON ARCHIVOS MARKDOWN.
+
 También podemos combinar `--stats` y `--validate` o `--st` y `--val` o `--validate` y `--stats` o `--val` y `--st` para obtener estadísticas que necesiten de los resultados de la validación.
 
 ```sh
-$ md-links ./some/example.md --stats --validate
+$ md-links ./some/example/ --stats --validate
 Total: 3
 Unique: 3
 Broken: 1
@@ -108,6 +112,7 @@ Broken: 1
 
 Se encuentran implementadas las opciones combinadas, sin embargo tienen un comportamiento no tan conforme. Se espera mejorar en futuras iteraciones.
 
+NO ESTÁ IMPLEMENTADO PARA EL INGRESO DEL DIRECTORIO DE UN  ARCHIVO.MD, SÓLO PARA EL DIRECTORIO DE UNA CARPETA CON ARCHIVOS MARKDOWN.
 
 ## Testing
 
